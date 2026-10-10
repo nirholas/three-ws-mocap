@@ -1,0 +1,19 @@
+# @three-ws/mocap
+
+> Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.
+
+@three-ws/mocap is a JavaScript library from three.ws. Install: `npm install @three-ws/mocap`.
+
+## Docs
+
+- [README](https://github.com/nirholas/three-ws-mocap/blob/main/README.md): install, configuration, full reference
+- [Documentation site](https://nirholas.github.io/three-ws-mocap/): the README as a web page
+- [Full text for LLMs](https://nirholas.github.io/three-ws-mocap/llms-full.txt): README inlined
+- [AGENTS.md](https://github.com/nirholas/three-ws-mocap/blob/main/AGENTS.md): guidance for coding agents
+
+## Project
+
+- [Source](https://github.com/nirholas/three-ws-mocap)
+- [npm](https://www.npmjs.com/package/@three-ws/mocap)
+- [three.ws](https://three.ws): the platform this is part of
+- [Issues](https://github.com/nirholas/three-ws-mocap/issues)

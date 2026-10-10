@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@three-ws/mocap: Motion capture as an API</title>
+<meta name="description" content="Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.">
+<link rel="canonical" href="https://nirholas.github.io/three-ws-mocap/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="three.ws">
+<meta property="og:title" content="@three-ws/mocap">
+<meta property="og:description" content="Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.">
+<meta property="og:url" content="https://nirholas.github.io/three-ws-mocap/">
+<meta property="og:image" content="https://nirholas.github.io/three-ws-mocap/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@three-ws/mocap">
+<meta name="twitter:description" content="Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.">
+<meta name="twitter:image" content="https://nirholas.github.io/three-ws-mocap/og.png">
+<meta name="keywords" content="motion-capture, mocap, facial-animation, blendshapes, arkit, mediapipe, webcam, animation, avatar, three.ws, ai-agents">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+<link rel="icon" href="https://three.ws/three-ws-mcp-icon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"@three-ws/mocap","description":"Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.","codeRepository":"https://github.com/nirholas/three-ws-mocap","programmingLanguage":"JavaScript","license":"https://spdx.org/licenses/Apache-2.0.html","version":"0.1.3","url":"https://nirholas.github.io/three-ws-mocap/","author":{"@type":"Organization","name":"three.ws","url":"https://three.ws"},"keywords":"motion-capture, mocap, facial-animation, blendshapes, arkit, mediapipe, webcam, animation, avatar, three.ws, ai-agents"}</script>
+<style>:root{--bg:#fff;--fg:#111418;--mut:#586069;--line:#e3e6ea;--acc:#2563eb;--code:#f4f6f8;--card:#fafbfc}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0d10;--fg:#e8eaed;--mut:#9aa3ad;--line:#232830;--acc:#6ea0ff;--code:#14181d;--card:#10141a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;text-decoration:none;color:var(--fg)}
+.bar nav{margin-left:auto;display:flex;gap:16px;font-size:14px}
+.bar nav a{color:var(--mut);text-decoration:none;transition:color .15s}.bar nav a:hover{color:var(--fg)}
+.hero{max-width:1100px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{color:var(--mut);max-width:70ch;font-size:18px;margin:0 0 24px}
+.install{display:flex;align-items:center;gap:8px;max-width:620px;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 14px}
+.install code{flex:1;overflow-x:auto;white-space:nowrap;font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
+.install button{border:0;background:var(--acc);color:#fff;border-radius:7px;padding:8px 14px;font:600 13px system-ui;cursor:pointer;transition:transform .12s,opacity .12s}
+.install button:hover{opacity:.9}.install button:active{transform:scale(.96)}
+.cta{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.cta a{padding:9px 16px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--fg);transition:border-color .15s,transform .15s}
+.cta a:hover{border-color:var(--acc);transform:translateY(-1px)}.cta a.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.layout{max-width:1100px;margin:0 auto;padding:8px 16px 64px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:40px}
+@media(max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:76px;align-self:start;font-size:14px;border-left:1px solid var(--line);padding-left:16px}
+.toc p{margin:0 0 8px;font-weight:700;color:var(--mut);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.toc ul{list-style:none;margin:0;padding:0}.toc li{margin:6px 0}.toc a{color:var(--mut);text-decoration:none}.toc a:hover{color:var(--fg)}
+main{min-width:0;overflow-wrap:anywhere}main pre code{overflow-wrap:normal}main img{max-width:100%;height:auto}
+main h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.anchor{margin-left:-1.1em;padding-right:.4em;text-decoration:none;opacity:0;color:var(--mut)}h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
+code{font:0.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.15em .35em;border-radius:5px}pre code{background:none;padding:0}
+table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%}th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}th{background:var(--card)}
+blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--mut)}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+.foot-in{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;gap:16px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+<a class="brand" href="https://nirholas.github.io/three-ws-mocap/">@three-ws/mocap</a>
+<nav aria-label="Project links"><a href="https://github.com/nirholas/three-ws-mocap">GitHub</a><a href="https://www.npmjs.com/package/@three-ws/mocap">npm</a><a href="llms.txt">llms.txt</a><a href="https://three.ws">three.ws</a></nav>
+</div></header>
+<section class="hero">
+<h1>@three-ws/mocap</h1>
+<p>Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.</p>
+<div class="install" role="group" aria-label="Install command"><code>npm install @three-ws/mocap</code><button type="button" data-copy="npm install @three-ws/mocap">Copy</button></div>
+<div class="cta"><a class="pri" href="https://github.com/nirholas/three-ws-mocap">View on GitHub</a><a href="https://github.com/nirholas/three-ws-mocap/stargazers">Star the repo</a></div>
+</section>
+<div class="layout">
+<main id="content"><p align="center"><strong>Motion capture as an API, turn a webcam or video into face, pose, and hand animation clips you can replay on any avatar.</strong></p><p align="center">
+  <a href="https://www.npmjs.com/package/@three-ws/mocap"><img alt="npm" src="https://img.shields.io/npm/v/@three-ws/mocap?logo=npm&color=cb3837"></a>
+  <a href="https://www.npmjs.com/package/@three-ws/mocap"><img alt="downloads" src="https://img.shields.io/npm/dm/@three-ws/mocap?color=cb3837"></a>
+  <img alt="license" src="https://img.shields.io/npm/l/@three-ws/mocap?color=3b82f6">
+  <img alt="node" src="https://img.shields.io/node/v/@three-ws/mocap?color=339933&logo=node.js">
+</p><p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#api">API</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="https://three.ws">three.ws</a>
+</p><hr>
+<blockquote>
+<p><code>@three-ws/mocap</code> is the official client for the three.ws <strong>mocap clip</strong> store -
+the library behind the in-browser mocap studio. Recording happens in the
+browser: MediaPipe Face Landmarker reads a webcam frame and emits 52 ARKit
+blendshapes plus a head-pose matrix per frame; the runtime smooths and packs
+them into a portable clip. This package is the durable half, it saves that
+clip, lists your library, makes clips public or for-sale, and hands any clip
+back so you can replay it on a different avatar. It wraps the auth&#39;d
+<code>/api/mocap/clips</code> endpoints. It pairs with
+<a href="https://www.npmjs.com/package/@three-ws/avatar"><code>@three-ws/avatar</code></a> and
+<a href="https://www.npmjs.com/package/@three-ws/walk"><code>@three-ws/walk</code></a>, those <em>render</em>
+the avatar, <code>@three-ws/mocap</code> <em>drives its face</em>.</p>
+</blockquote>
+<h2 id="why"><a class="anchor" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>Facial mocap in the browser is solved math, but the boring half, persisting a
+recording, versioning the wire format, sharing it, replaying it on a <em>different</em>
+rig: is where projects stall. A blendshape buffer in memory is gone the moment
+the tab closes. This package is that half, done once:</p>
+<ul>
+<li><strong>Capture once, replay anywhere.</strong> A clip is rig-agnostic ARKit blendshapes,
+not baked keyframes, so a face you recorded on one avatar plays on any avatar
+that exposes ARKit morph targets.</li>
+<li><strong>Versioned wire format.</strong> Every clip carries a format string
+(<code>three.ws.face-mocap.v1</code>). The runtime asserts on it before replay, a future
+v2 clip can&#39;t silently load on a v1 player and mangle the animation.</li>
+<li><strong>Library, sharing, marketplace.</strong> Clips are private by default; flip one to
+<code>public</code>, attach a <code>$THREE</code> price, and it&#39;s listed. One field, no new plumbing.</li>
+<li><strong>Cursor-paginated, owner-scoped.</strong> List your own library or browse the public
+pool with the same call.</li>
+</ul>
+<h2 id="install"><a class="anchor" href="#install" aria-label="Link to this section">#</a>Install</h2>
+<pre><code class="language-bash">npm install @three-ws/mocap
+</code></pre>
+<p>Zero runtime dependencies. Works in Node 18+ and the browser (uses <code>fetch</code>). To
+<em>record</em> a clip in the browser, use the three.ws mocap runtime; to <em>render</em> the
+avatar you replay it on, add
+<a href="https://www.npmjs.com/package/@three-ws/avatar"><code>@three-ws/avatar</code></a>.</p>
+<h2 id="quick-start"><a class="anchor" href="#quick-start" aria-label="Link to this section">#</a>Quick start</h2>
+<p>Save a recording the browser runtime handed you, then read it back:</p>
+<pre><code class="language-js">import { saveClip, getClip } from &#39;@three-ws/mocap&#39;;
+
+// `recording` is the object FaceMocap.getRecording() returns:
+//   { format: &#39;three.ws.face-mocap.v1&#39;, duration, frames: [{ t, shapes, mat }] }
+const { id, slug } = await saveClip(recording, {
+  name: &#39;Surprised reaction&#39;,
+  tags: [&#39;emote&#39;, &#39;reaction&#39;],
+}, { token: process.env.THREEWS_TOKEN });
+
+const clip = await getClip(id);
+console.log(clip.frameCount, &#39;frames,&#39;, clip.duration, &#39;seconds&#39;);
+// → drop clip.frames into FaceMocap.play(clip) on any ARKit avatar
+</code></pre>
+<p>List your library, then browse the public pool:</p>
+<pre><code class="language-js">import { listClips } from &#39;@three-ws/mocap&#39;;
+
+const mine   = await listClips({ token }, { kind: &#39;face&#39; });
+const shared = await listClips({}, { includePublic: true, limit: 100 });
+</code></pre>
+<h2 id="api"><a class="anchor" href="#api" aria-label="Link to this section">#</a>API</h2>
+<p>The SDK is a thin client over <code>/api/mocap/clips</code>. Every write needs a session
+cookie or a bearer token with the right scope; reads of public clips are open.</p>
+<p><strong>Writing with a session cookie also needs a CSRF token.</strong> Cookie-authenticated
+writes are double-submit protected: mint a token with <code>GET /api/csrf-token</code> and
+echo it in the <code>X-CSRF-Token</code> header on every <code>POST</code>/<code>PATCH</code>/<code>DELETE</code>, or the
+call answers <code>403 csrf_missing</code>. Tokens are single-use, so mint one per write.
+Bearer tokens are exempt (a bearer is not auto-attached by a browser, so it is
+its own proof of intent), which makes <code>{ token }</code> the simpler path outside the
+browser:</p>
+<pre><code class="language-js">import { createMocap } from &#39;@three-ws/mocap&#39;;
+
+// Bearer: nothing else to do.
+const mocap = createMocap({ token: process.env.THREEWS_TOKEN });
+
+// Session cookie: wrap fetch and attach a fresh CSRF token per write.
+const cookieClient = createMocap({
+  headers: { cookie },
+  fetch: async (url, init = {}) =&gt; {
+    if ((init.method || &#39;GET&#39;) === &#39;GET&#39;) return fetch(url, init);
+    const res = await fetch(&#39;https://three.ws/api/csrf-token&#39;, { headers: { cookie } });
+    const { data } = await res.json();
+    return fetch(url, { ...init, headers: { ...init.headers, &#39;x-csrf-token&#39;: data.token } });
+  },
+});
+</code></pre>
+<h3 id="savecliprecording-meta-auth-promiseclip"><a class="anchor" href="#savecliprecording-meta-auth-promiseclip" aria-label="Link to this section">#</a><code>saveClip(recording, meta, auth) → Promise&lt;Clip&gt;</code></h3>
+<p>Persist a browser recording. Wraps <code>POST /api/mocap/clips</code>. The <code>recording</code> is
+passed through as the <code>clip</code> field; <code>meta</code> supplies the library metadata.</p>
+<p><strong><code>recording</code></strong>: the object the capture runtime returns:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>format</code></td>
+<td><code>string</code></td>
+<td>One of the <a href="#how-it-works">supported formats</a>. Asserted server-side.</td>
+</tr>
+<tr>
+<td><code>duration</code></td>
+<td><code>number</code></td>
+<td>Seconds, <code>0</code>-<code>3600</code>. Stored as <code>duration_ms</code>.</td>
+</tr>
+<tr>
+<td><code>frames</code></td>
+<td><code>Frame[]</code></td>
+<td><code>{ t, shapes, mat? }</code> per frame. Max <strong>18,000</strong> frames, <strong>2 MB</strong> inline.</td>
+</tr>
+</tbody></table>
+<p>A <code>Frame</code> is <code>{ t: number, shapes: Record&lt;string, number&gt;, mat?: number[16] | null }</code></p>
+<ul>
+<li><code>t</code> is seconds from clip start, <code>shapes</code> maps ARKit blendshape names to scores,
+<code>mat</code> is the optional 4×4 head-pose matrix.</li>
+</ul>
+<p><strong><code>meta</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td><strong>Required.</strong> 1-120 chars.</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td><code>string</code></td>
+<td>auto from <code>name</code></td>
+<td><code>^[a-z0-9][a-z0-9-]{0,79}$</code>, unique per owner.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>Up to 2000 chars.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td><code>string[]</code></td>
+<td><code>[]</code></td>
+<td>Up to 20 tags, ≤40 chars each.</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td><code>&#39;private&#39; | &#39;unlisted&#39; | &#39;public&#39;</code></td>
+<td><code>&#39;private&#39;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>avatarId</code></td>
+<td><code>uuid</code></td>
+<td>-</td>
+<td>Bind the clip to one of your avatars. Must be owned by you. (<code>avatar_id</code> is accepted too.)</td>
+</tr>
+</tbody></table>
+<p>Returns the created <code>Clip</code> (<code>201</code>). <code>kind</code> (<code>face</code> / <code>pose</code> / <code>hand</code> / <code>vmc</code>) is
+derived from <code>format</code> server-side.</p>
+<h3 id="getclipidorslug-auth-promiseclip"><a class="anchor" href="#getclipidorslug-auth-promiseclip" aria-label="Link to this section">#</a><code>getClip(idOrSlug, auth?) → Promise&lt;Clip&gt;</code></h3>
+<p>Fetch one clip <strong>with its full <code>frames</code> array</strong>, ready to replay. Wraps
+<code>GET /api/mocap/clips/:idOrSlug</code>. Public and unlisted clips need no auth; a
+<code>private</code> clip resolves only for its owner (otherwise <code>404</code>, never a leak). Each
+non-owner fetch bumps <code>play_count</code>.</p>
+<p>A slug is unique per owner, not globally, so a slug lookup resolves to your own
+clip when you are authenticated and otherwise to the oldest public clip carrying
+it. Pass the <code>id</code> when you need to name one exact clip.</p>
+<h3 id="listclipsauth-opts-promise-items-nextcursor"><a class="anchor" href="#listclipsauth-opts-promise-items-nextcursor" aria-label="Link to this section">#</a><code>listClips(auth, opts?) → Promise&lt;{ items, nextCursor }&gt;</code></h3>
+<p>List clips <strong>without frames</strong> (metadata only: cheap, <code>frames</code> is <code>null</code> on every
+row). Wraps <code>GET /api/mocap/clips</code>. Cursor-paginated, newest first. Returns
+<code>{ items, nextCursor, raw }</code>, where <code>nextCursor</code> is <code>null</code> on the last page and
+<code>raw</code> is the untouched wire envelope.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>limit</code></td>
+<td><code>number</code></td>
+<td><code>50</code></td>
+<td>Clamped to <code>1</code>-<code>100</code>.</td>
+</tr>
+<tr>
+<td><code>cursor</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td><code>nextCursor</code> from the previous page.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td><code>&#39;face&#39; | &#39;pose&#39; | &#39;hand&#39; | &#39;vmc&#39;</code></td>
+<td>-</td>
+<td>Filter by clip kind.</td>
+</tr>
+<tr>
+<td><code>includePublic</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Authed: union your clips with the public pool.</td>
+</tr>
+</tbody></table>
+<p>With no <code>auth</code>, you get the public pool only. With <code>auth</code>, you get your own
+library; add <code>includePublic: true</code> to fold in public clips too.</p>
+<h3 id="updateclipidorslug-patch-auth-promiseclip"><a class="anchor" href="#updateclipidorslug-patch-auth-promiseclip" aria-label="Link to this section">#</a><code>updateClip(idOrSlug, patch, auth) → Promise&lt;Clip&gt;</code></h3>
+<p>Edit metadata. Wraps <code>PATCH /api/mocap/clips/:id</code> (owner only). Patchable:
+<code>name</code>, <code>description</code>, <code>tags</code>, <code>visibility</code>, <code>avatarId</code>, and <code>price</code>. Set
+<code>price: { amount, currency }</code> to list the clip for sale, or <code>price: null</code> to make
+it free again. Bearer tokens need the <code>avatars:write</code> scope.</p>
+<h3 id="deleteclipidorslug-auth-promise-ok-true"><a class="anchor" href="#deleteclipidorslug-auth-promise-ok-true" aria-label="Link to this section">#</a><code>deleteClip(idOrSlug, auth) → Promise&lt;{ ok: true }&gt;</code></h3>
+<p>Soft-delete a clip you own. Wraps <code>DELETE /api/mocap/clips/:id</code>. The row is
+tombstoned (<code>deleted_at</code>), not destroyed. Bearer tokens need <code>avatars:delete</code>.</p>
+<p><strong><code>Clip</code> shape</strong> (returned by every call; <code>frames</code> only on <code>getClip</code>). The SDK
+camelCases the wire row and keeps the untouched original on <code>raw</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code> / <code>slug</code></td>
+<td><code>string</code></td>
+<td>Identity.</td>
+</tr>
+<tr>
+<td><code>name</code> / <code>description</code></td>
+<td><code>string</code></td>
+<td>Library metadata.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td><code>&#39;face&#39; | &#39;pose&#39; | &#39;hand&#39; | &#39;vmc&#39;</code></td>
+<td>Derived from <code>format</code>.</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td><code>string</code></td>
+<td>Wire-format version string.</td>
+</tr>
+<tr>
+<td><code>durationMs</code> / <code>duration</code></td>
+<td><code>number</code></td>
+<td>Milliseconds / seconds.</td>
+</tr>
+<tr>
+<td><code>frameCount</code></td>
+<td><code>number</code></td>
+<td>Number of frames.</td>
+</tr>
+<tr>
+<td><code>frames</code></td>
+<td><code>Frame[]</code></td>
+<td>Present only on <code>getClip</code>.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td><code>string[]</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td><code>string</code></td>
+<td><code>private</code> / <code>unlisted</code> / <code>public</code>.</td>
+</tr>
+<tr>
+<td><code>avatarId</code></td>
+<td><code>uuid | null</code></td>
+<td>Bound avatar, if any.</td>
+</tr>
+<tr>
+<td><code>playCount</code></td>
+<td><code>number</code></td>
+<td>Non-owner fetches.</td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td><code>{ amount, currency } | null</code></td>
+<td><code>null</code> when free.</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td><code>&#39;self&#39; | &#39;other&#39; | null</code></td>
+<td>Relative to the caller. Projected by <code>listClips</code> only; <code>null</code> on a single-clip read or write.</td>
+</tr>
+<tr>
+<td><code>raw</code></td>
+<td><code>unknown</code></td>
+<td>The untouched wire row (<code>duration_ms</code>, <code>frame_count</code>, …).</td>
+</tr>
+</tbody></table>
+<h2 id="how-it-works"><a class="anchor" href="#how-it-works" aria-label="Link to this section">#</a>How it works</h2>
+<p>Capture is client-side and free; persistence is this API. The clip is the
+contract between them: a portable, versioned blendshape buffer:</p>
+<pre><code>  webcam / video frame
+         │
+         ▼
+  MediaPipe Face Landmarker      ← in the browser, three.ws mocap runtime
+         │  52 ARKit blendshapes + 4×4 head-pose matrix
+         ▼
+  one-euro smoothing → record buffer
+         │
+         ▼
+  getRecording() ──▶ { format, duration, frames:[{ t, shapes, mat }] }
+         │
+   saveClip()  │  POST /api/mocap/clips        ← @three-ws/mocap
+         ▼
+  ┌─────────────────────────────┐
+  │  mocap_clips (Postgres)      │  owner-scoped, versioned, taggable, priceable
+  └──────────────┬──────────────┘
+   getClip()     │  GET /api/mocap/clips/:id
+         ▼
+  FaceMocap.play(clip) on ANY ARKit avatar   ← @three-ws/avatar / @three-ws/walk
+</code></pre>
+<p>Because a clip is rig-agnostic ARKit blendshapes: not baked bone keyframes -
+the same recording replays on any avatar that exposes ARKit morph targets. The
+<code>format</code> string carries the version; the runtime refuses a clip whose format it
+doesn&#39;t speak rather than mangling the animation.</p>
+<p><strong>Supported formats</strong> (the <code>format</code> string a recording must carry):</p>
+<table>
+<thead>
+<tr>
+<th><code>format</code></th>
+<th><code>kind</code></th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>three.ws.face-mocap.v1</code></td>
+<td><code>face</code></td>
+<td>Webcam facial blendshapes + head pose.</td>
+</tr>
+<tr>
+<td><code>three.ws.pose-mocap.v1</code></td>
+<td><code>pose</code></td>
+<td>Body/skeletal pose capture.</td>
+</tr>
+<tr>
+<td><code>three.ws.hand-mocap.v1</code></td>
+<td><code>hand</code></td>
+<td>Hand/finger tracking.</td>
+</tr>
+<tr>
+<td><code>three.ws.vmc.v1</code></td>
+<td><code>vmc</code></td>
+<td>VMC-protocol motion stream.</td>
+</tr>
+</tbody></table>
+<p>Frames are stored inline as JSONB up to <strong>2 MB</strong> (≈ a multi-minute 30 Hz face
+capture). The runtime caps a single clip at <strong>18,000 frames</strong>; longer captures
+should be split.</p>
+<h2 id="errors-edge-cases"><a class="anchor" href="#errors-edge-cases" aria-label="Link to this section">#</a>Errors &amp; edge cases</h2>
+<p>The endpoints return structured JSON errors <code>{ error: { code, message } }</code>. The
+SDK surfaces them as a typed <code>ThreeWsError</code> carrying the <code>code</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>code</code></th>
+<th>HTTP</th>
+<th>Meaning</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>unauthorized</code></td>
+<td>401</td>
+<td>Write with no session/token.</td>
+<td>Sign in or pass a bearer <code>token</code>.</td>
+</tr>
+<tr>
+<td><code>csrf_missing</code> / <code>csrf_invalid</code></td>
+<td>403</td>
+<td>Cookie-authenticated write with no (or a spent) <code>X-CSRF-Token</code>.</td>
+<td>Mint one per write from <code>GET /api/csrf-token</code>, or use a bearer token.</td>
+</tr>
+<tr>
+<td><code>insufficient_scope</code></td>
+<td>403</td>
+<td>Token lacks <code>avatars:write</code> / <code>avatars:delete</code>.</td>
+<td>Mint a token with the scope.</td>
+</tr>
+<tr>
+<td><code>validation_error</code></td>
+<td>400</td>
+<td><code>meta</code>/<code>recording</code> failed schema.</td>
+<td>Fix the field named in <code>message</code>.</td>
+</tr>
+<tr>
+<td><code>unsupported_format</code></td>
+<td>400</td>
+<td><code>format</code> isn&#39;t a known wire format.</td>
+<td>Use a <a href="#how-it-works">supported format</a>.</td>
+</tr>
+<tr>
+<td><code>payload_too_large</code></td>
+<td>413</td>
+<td>Inline frames exceed 2 MB.</td>
+<td>Record a shorter clip or split it.</td>
+</tr>
+<tr>
+<td><code>duplicate_slug</code></td>
+<td>409</td>
+<td>Slug already used by you.</td>
+<td>Omit <code>slug</code> (auto), or pick another.</td>
+</tr>
+<tr>
+<td><code>not_found</code></td>
+<td>404</td>
+<td>Missing clip, or a <code>private</code> clip you don&#39;t own.</td>
+<td>Check the id/ownership.</td>
+</tr>
+<tr>
+<td><code>invalid_request</code></td>
+<td>400</td>
+<td>Bad id, or empty <code>PATCH</code>.</td>
+<td>Supply a valid id / ≥1 field.</td>
+</tr>
+<tr>
+<td><code>db_error</code></td>
+<td>500</td>
+<td>List query failed.</td>
+<td>Retry.</td>
+</tr>
+</tbody></table>
+<p>Every state is designed: a <code>private</code> clip you don&#39;t own returns <code>404</code>, not its
+contents: non-owners can&#39;t even confirm it exists. Mirror that in your UI.</p>
+<h2 id="examples"><a class="anchor" href="#examples" aria-label="Link to this section">#</a>Examples</h2>
+<p><strong>Record in the browser, save to your library:</strong></p>
+<pre><code class="language-js">import { saveClip } from &#39;@three-ws/mocap&#39;;
+// faceMocap is the three.ws runtime recorder; recording is its output
+const recording = faceMocap.getRecording();
+const clip = await saveClip(recording, {
+  name: &#39;Wink + smile&#39;,
+  tags: [&#39;emote&#39;],
+  visibility: &#39;unlisted&#39;,
+}, { token });
+console.log(`https://three.ws/mocap/${clip.slug}`);
+</code></pre>
+<p><strong>Replay a public clip on a freshly forged avatar:</strong></p>
+<pre><code class="language-js">import { getClip } from &#39;@three-ws/mocap&#39;;
+import { forge } from &#39;@three-ws/forge&#39;;
+
+const avatar = await forge(&#39;a friendly robot, ARKit face&#39;);
+const clip   = await getClip(&#39;surprised-reaction&#39;);
+// drive avatar&#39;s ARKit morph targets from clip.frames in your render loop
+</code></pre>
+<p><strong>List a tag-filtered gallery for a picker:</strong></p>
+<pre><code class="language-js">import { listClips } from &#39;@three-ws/mocap&#39;;
+
+let cursor;
+const all = [];
+do {
+  const page = await listClips({}, { includePublic: true, limit: 100, cursor });
+  all.push(...page.items);
+  cursor = page.nextCursor;
+} while (cursor);
+</code></pre>
+<h2 id="related"><a class="anchor" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<ul>
+<li><a href="https://www.npmjs.com/package/@three-ws/avatar"><code>@three-ws/avatar</code></a>, render the avatar a mocap clip drives.</li>
+<li><a href="https://www.npmjs.com/package/@three-ws/walk"><code>@three-ws/walk</code></a>, a rigged avatar as a page companion you can face-animate.</li>
+<li><a href="https://www.npmjs.com/package/@three-ws/forge"><code>@three-ws/forge</code></a>, generate the ARKit avatar to replay clips on.</li>
+<li><a href="https://www.npmjs.com/package/@three-ws/x402-fetch"><code>@three-ws/x402-fetch</code></a>, settle payments for priced clips.</li>
+</ul>
+<hr>
+<p align="center">Built by <a href="https://three.ws">three.ws</a> · The only coin is <a href="https://three.ws">$THREE</a></p>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#why">Why</a></li><li><a href="#install">Install</a></li><li><a href="#quick-start">Quick start</a></li><li><a href="#api">API</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#errors-edge-cases">Errors &amp; edge cases</a></li><li><a href="#examples">Examples</a></li><li><a href="#related">Related</a></li></ul></nav>
+</div>
+<footer><div class="foot-in"><span>Apache-2.0 licensed</span><a href="https://github.com/nirholas/three-ws-mocap/issues">Issues</a><a href="https://github.com/nirholas/three-ws-mocap/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/nirholas/three-ws-mocap/security/policy">Security</a><a href="https://three.ws">Part of three.ws</a></div></footer>
+<script>document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+var t=b.getAttribute('data-copy');var done=function(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1400)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}})});</script>
+</body>
+</html>

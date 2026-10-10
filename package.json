@@ -1,0 +1,55 @@
+{
+	"name": "@three-ws/mocap",
+	"version": "0.1.3",
+	"description": "Motion capture as an API. Turn webcam/video into face, pose, and hand animation clips, then save, share, and replay them on any three.ws avatar.",
+	"type": "module",
+	"main": "./src/index.js",
+	"module": "./src/index.js",
+	"types": "./src/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.d.ts",
+			"import": "./src/index.js",
+			"default": "./src/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"test": "node --test test/*.test.js"
+	},
+	"keywords": [
+		"motion-capture",
+		"mocap",
+		"facial-animation",
+		"blendshapes",
+		"arkit",
+		"mediapipe",
+		"webcam",
+		"animation",
+		"avatar",
+		"three.ws",
+		"ai-agents"
+	],
+	"author": "nirholas <support@three.ws>",
+	"license": "Apache-2.0",
+	"homepage": "https://nirholas.github.io/three-ws-mocap/",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nirholas/three-ws-mocap.git"
+	},
+	"bugs": {
+		"url": "https://github.com/nirholas/three-ws-mocap/issues"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"dependencies": {},
+	"publishConfig": {
+		"access": "public"
+	}
+}
