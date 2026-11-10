@@ -6,6 +6,7 @@
     "name": "nirholas"
   },
   "repository": "https://github.com/nirholas/three-ws-mocap",
+  "homepage": "https://nirholas.github.io/three-ws-mocap/",
   "license": "Apache-2.0",
   "keywords": [
     "motion-capture",
@@ -13,6 +14,5 @@
     "avatar",
     "three-ws",
     "blendshapes"
-  ],
-  "homepage": "https://nirholas.github.io/three-ws-mocap/"
+  ]
 }
